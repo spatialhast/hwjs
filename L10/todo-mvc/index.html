@@ -37,6 +37,11 @@
                             <label for="a1">
                                 <input id="a1" type="checkbox"> Задача 1
                             </label>
+                        </li>                        
+						<li>
+                            <label for="a2">
+                                <input id="a2" type="checkbox"> Задача 2
+                            </label>
                         </li>
 
                     </ul>
@@ -67,7 +72,49 @@
                     <div class="col-xs-1 col-md-4"></div>
                 </div>
             </div>
-            <script type="text/javascript" src="js/"></script>
+			
+			<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+            <script>
+			
+			//On change checkbox 'Make all as complited'
+			
+			
+$(document).ready(function (){
+  
+	$(':checkbox').click(function() {
+	   
+	   // using jQuery's filter() method  
+	   if ($(this).filter(':checked')) {  
+		  
+
+
+
+		  
+	   }; 
+
+
+	   
+	});
+	
+	
+});			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			</script>
 </body>
 
 </html>
