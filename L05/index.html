@@ -1,0 +1,40 @@
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		#circle {
+			background-color: red;
+			position: absolute;
+			left: 100px;
+			top: 100px;
+			border-radius: 50% 50%;
+			width: 100px;
+			height: 100px;	
+		}
+		.rectangle {
+			background-color: green;
+			position: absolute;
+			right: 100px;
+			top: 100px;
+			width: 100px;
+			height: 100px;	
+		}		
+	</style>
+</head>
+<body>
+	<div id="circle"></div>
+	<div class="rectangle"></div>
+
+	<script>
+		var app = function app(argument) {
+		  return document.querySelectorAll(argument);
+		};
+
+		console.log(app('#circle'));
+		console.log(app('.rectangle'));	
+	</script>	
+
+	<!--script src=""></script-->	
+
+</body>
+</html>

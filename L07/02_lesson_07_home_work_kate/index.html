@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Library</title>
+</head>
+
+<body>
+</body>
+
+<script>
+
+
+function Book (bookName, author, pages) { //обьявление функции-конструктора
+	this.name = bookName;  // добавляем методы и свойства в конструктор
+	this.author = author;  // добавляем методы и свойства в конструктор
+	this.pages = pages;  // добавляем методы и свойства в конструктор
+}
+var books = [];   // создание массива
+books.push(new Book('Java Many Parts', 'Crok', 1000)); // добавление значений в конец массива, через new создаем новый объект (экземпляр объекта) используя функцию конструктор Book()
+books.push(new Book('Javascript Good Parts', 'Crokfold', 300));
+books.push(new Book('PHP Bad Parts', 'Fold', 500));
+books.push(new Book('HTML Good Parts', 'Rokfold', 300));
+
+function createSpan () { // создание новой функции
+	var spanObj = document.createElement('span'); // обьявляем переменную spanObj и присваиваем ей cоздание нового элемента - тега <span>
+}
+// 0
+// var appEnd = document.body.appendChild;
+// var crEate = document.createElement;
+//appEnd( nodeDiv )
+
+//1
+var ulObj = document.createElement('ul');  // обьявляем переменную ulObj и присваиваем ей cоздание нового элемента - тега <ul>
+
+//2
+function renderBook (element, index, array) { // создаем новую функцию renderBook, которая принимает 3 параметра: element - элемент массива, index - индекс (порядковый номер) массива, array - сам массив)
+	var liObj = document.createElement('li'), // обьявляем переменную liObj и присваиваем ей cоздание нового элемента - тега <li>
+		spanName = document.createElement('span'),// обьявляем переменную spanName и присваиваем ей cоздание нового элемента - тега <span>, куда будем заносить название книги
+		spanAuthor = document.createElement('span'), // обьявляем переменную spanAuthor и присваиваем ей cоздание нового элемента - тега <span>, куда будем заносить имя автора книги
+		spanPage = document.createElement('span'); // обьявляем переменную spanPage и присваиваем ей cоздание нового элемента - тега <span>, куда будем заносить колличество страниц книги
+	spanName.innerHTML = element.name; // для элемента spanName innerHTML устанавливает значение element.name
+	spanAuthor.innerHTML = element.author; // для элемента spanAuthor innerHTML устанавливает значение element.author
+	spanPage.innerHTML = element.pages; // для элемента spanPage innerHTML устанавливает значение element.pages
+	liObj.appendChild( spanName ); // вставляем внутрь нового элемента - тега <li> название книги
+	liObj.appendChild( spanAuthor ); // вставляем внутрь нового элемента - тега <li> имя автора книги
+	liObj.appendChild( spanPage ); // вставляем внутрь нового элемента - тега <li> колличество страниц книги
+	ulObj.appendChild( liObj ); // вставляем внутрь нового элемента - тега <ul> содержимое тегов <li>
+}
+
+books.forEach(renderBook); // для каждого элемента массива books вызываем функцию renderBook
+
+//3
+document.body.appendChild( ulObj ); // вставляем внутрь тега body содержимое тега <ul>
+
+//4
+var clickHandler = function clickHandler ( key ) { // создаем переменную clickHandler и заносим в нее создание функции clickHandler
+	console.log('clickHandler 1', books, key); // выводим в консоль строку 'clickHandler 1', 
+	books.sort(function (a, b) {
+		
+		var first = a[ key ],
+			second = b[ key ];
+
+		if(key !== 'pages') {
+			first = first[0].toLowerCase();
+			second = second[0].toLowerCase();
+		}
+ 	  if (first > second) { //b[ 'name' ]
+	    return 1;
+	  }
+	  if (first < second) {
+	    return -1;
+	  }
+	  return 0;
+	});
+	console.log('clickHandler 2', books, key);
+
+	ulObj.innerHTML = '';
+	
+	books.forEach(renderBook);
+}
+function createButton (text, key, callback) { // создание функции createButton, которая при вызове создает кнопку, в key передается название свойства (или author, или name, или pages), callback нужен, чтобы поменять позицию в списке
+	var button = document.createElement('button'); // обьявляем переменную button и заносим в нее создание нового элемента  - кнопки
+	button.innerHTML = text; // text указывает надпись на кнопке
+	var newCallback = callback.bind(null, key);
+	button.addEventListener('click', newCallback); //addEventListener придает обработчик события к документу при нажатии на кнопку, выполняется функция callback.bind(null, key);
+	document.body.appendChild(button); //вставляем внутрь тега body кнопку с собитыем
+}
+
+createButton('Sort By Author', 'author', clickHandler);  //вызываем функцию createButton, которая сортирует по author и вызывает clickHandler, которая сортирует массив
+createButton('Sort By Name', 'name', clickHandler);//вызываем функцию createButton, которая сортирует по name и вызывает clickHandler, которая сортирует массив
+createButton('Sort By Page', 'pages', clickHandler);
+//вызываем функцию createButton, которая сортирует по pages и вызывает clickHandler, которая сортирует массив
+
+
+</script>
+
+<!-- add LiveReload function -->
+<script>
+    document.write('<script src="http://' + (location.host || 'localhost')
+        .split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+</script>
+
+</html>
+
+
+<!-- NOTES -->
+
+<!-- 
+
+Reident (JS Beautifier): Ctrl+A - Alt+Shift+T // { "keys": ["alt+shift+t"], "command": "reindent" }, // 
+Nultiple Rename: Ctrl+D
+
+->
+
+
+
+
+<!-- TO DO -->
+
+<!-- 
+
+ООП в Javascript: наследование
+http://javascript.ru/tutorial/object/inheritance
+
+->

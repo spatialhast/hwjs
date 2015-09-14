@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Library</title>
+</head>
+
+<body>
+</body>
+
+<script>
+    // создаем функцию конструктор. имя функции пишем с большой буквы
+    function Book(bookName, author, pages) {
+        this.name = bookName;
+        this.author = author;
+        this.pages = pages;
+    };
+
+
+    var books = []; // создание массива books -- http://javascript.ru/Array
+
+
+    // push -- добавляем элементы (название книги (string), автора книги (string), количество страниц (number)) в массив -- http://javascript.ru/Array/push   -- https://learn.javascript.ru/types-intro
+    // new -- через new создаем новый объект (экземпляр объекта) используя функцию конструктор Book() -- http://javascript.ru/new
+    books.push(new Book('Java Many Parts', 'Crok', 1000));
+    books.push(new Book('Javascript Good Parts', 'Crokfold', 300));
+    books.push(new Book('PHP Bad Parts', 'Fold', 500));
+    books.push(new Book('HTML Good Parts', 'Rokfold', 300));
+
+
+    // создание функции createSpan()
+    function createSpan() {
+        // createElement - cоздает новый элемент с тегом span -- https://learn.javascript.ru/modifying-document --- http://htmlbook.ru/html/span
+        // span -- Тег <span> предназначен для определения строчных элементов документа 
+        return document.createElement('span');
+    };
+
+
+    // createElement - cоздает новый элемент с тегом ul -- https://learn.javascript.ru/modifying-document --- http://htmlbook.ru/html/ul
+    // ul -- Тег <ul> устанавливает маркированный список
+    var ulObj = document.createElement('ul');
+
+    function renderBook(element, index, array) {
+
+        // createElement - cоздает новый элемент с тегом li -- https://learn.javascript.ru/modifying-document --- http://htmlbook.ru/html/li
+        // li -- Тег <li> определяет отдельный элемент списка
+        var liObj = document.createElement('li');
+        //spanName = document.createElement('span'); // createElement - cоздает новый элемент с тегом span -- https://learn.javascript.ru/modifying-document --- http://htmlbook.ru/html/span
+        //spanAuthor = document.createElement('span'); // createElement - cоздает новый элемент с тегом span -- https://learn.javascript.ru/modifying-document --- http://htmlbook.ru/html/span
+        //spanPage = document.createElement('span'); // createElement - cоздает новый элемент с тегом span -- https://learn.javascript.ru/modifying-document --- http://htmlbook.ru/html/span
+        var spanName = createSpan(); // создание переменной spanName равной document.createElement('span') через функцию reateSpan ()
+        var spanAuthor = createSpan(); // создание переменной spanAuthor равной document.createElement('span') через функцию reateSpan ()
+        var spanPage = createSpan(); // создание переменной spanPage равной document.createElement('span') через функцию reateSpan ()
+
+
+
+        // innerHTML -- cвойство innerHTML устанавливает или получает всю разметку и содержание внутри данного элемента
+        // https://learn.javascript.ru/basic-dom-node-properties    http://innerhtml.ru/
+        spanName.innerHTML = element.name; // для элемента spanName innerHTML устанавливает значение element.name
+        spanAuthor.innerHTML = element.author; // для элемента spanAuthor innerHTML устанавливает значение element.author
+        spanPage.innerHTML = element.pages; // для элемента spanPage innerHTML устанавливает значение element.pages
+
+removeButton.innerHTML = 'x';
+removeButton.addEventListener('click', removeButton.bind(null, element, index, liObj));
+        
+
+
+        /*
+        // проверка что возвращает element
+        				console.log(element); // Book { name="Java Many Parts",  author="Crok",  pages=1000}
+        				console.log(element.name); // Java Many Parts
+        				console.log(element.author); // Crok
+        				console.log(element.pages); // 1000
+        */
+
+
+        // appendChild -- добавление элемента -- https://learn.javascript.ru/modifying-document
+        liObj.appendChild(spanName);
+        liObj.appendChild(document.createTextNode('\u00A0|\u00A0')); // добавляем space | space
+        liObj.appendChild(spanAuthor);
+        liObj.appendChild(document.createTextNode('\u00A0|\u00A0')); // добавляем space | space
+        liObj.appendChild(spanPage);
+
+        ulObj.appendChild(liObj);
+
+    };
+
+function removeButton (book, index, bookLi) {
+    console.log(books);
+    books.splice(index, 1);
+    console.log(books);
+    bookLi.parentnode.removeChild(bookLi);
+};
+
+
+    // forEach -- метод для перебора массива books -- https://learn.javascript.ru/array-iteration
+    // для каждого элемента массива он вызывает функцию renderBook, которая передает параметры (element, index, array)
+    books.forEach(renderBook);
+
+
+    // appendChild -- добавление элемента -- https://learn.javascript.ru/modifying-document
+    document.body.appendChild(ulObj);
+
+
+    // создание функции clickHandler, которая определяет сортировку при нажатии на соответствующую кнопку
+    var clickHandler = function clickHandler(key) {
+        console.log('clickHandler 1', books, key);
+
+
+        // сортировка - магия - нужно рассмотреть как работает
+        books.sort(function(a, b) {
+
+            var first = a[key],
+                second = b[key];
+
+            // проверка переменных first, second
+            console.log('first: ' + first);
+            console.log('second: ' + second);
+
+            if (key !== 'pages') {
+                first = first[0].toLowerCase();
+                second = second[0].toLowerCase();
+            }
+            if (first > second) { //b[ 'name' ]
+                return 1;
+            }
+            if (first < second) {
+                return -1;
+            }
+            return 0;
+        });
+
+        console.log('clickHandler 2', books, key);
+
+        ulObj.innerHTML = '';
+
+        books.forEach(renderBook);
+    };
+
+
+    // создание функции createButton, которая при вызове добавляет кнопку на страницу. Кнопка имеет свойства: название, id кнопки, событие при нажатии click
+    function createButton(text, key, callback) {
+        var button = document.createElement('button');
+        button.innerHTML = text;
+        var newCallback = callback.bind(null, key);
+        button.addEventListener('click', newCallback);
+        document.body.appendChild(button);
+    };
+
+
+    // createButton -- add button on page ('Sort By Author' - button name, 'author' - переменная в функции Book, clickHandler -событие)
+    createButton('Sort By Author', 'author', clickHandler);
+
+    // add two space after button -- http://stackoverflow.com/questions/10951340/create-a-blank-html-space-on-the-fly-javascript
+    // createTextNode -- cоздает новый текстовый узел с данным текстом  -- https://learn.javascript.ru/modifying-document
+    // appendChild -- добавление элемента -- https://learn.javascript.ru/modifying-document
+    document.body.appendChild(document.createTextNode('\u00A0\u00A0'));
+
+    // createButton -- add button on page ('Sort By Name' - button name, 'name' - переменная в функции Book, clickHandler -событие)
+    createButton('Sort By Name', 'name', clickHandler);
+
+    // add two space after button -- http://stackoverflow.com/questions/10951340/create-a-blank-html-space-on-the-fly-javascript
+    // createTextNode -- cоздает новый текстовый узел с данным текстом  -- https://learn.javascript.ru/modifying-document
+    // appendChild -- добавление элемента -- https://learn.javascript.ru/modifying-document
+    document.body.appendChild(document.createTextNode('\u00A0\u00A0'));
+
+    // createButton -- add button on page ('Sort By Page' - button name, 'pages' - переменная в функции Book, clickHandler -событие)
+    createButton('Sort By Page', 'pages', clickHandler);
+	
+	
+	
+	// add input form
+		
+	function formBook() = document.createElement('form');
+
+	function createInput(name, conteiner) {
+		var input = document.createElement('input');
+		input.setAttribute('type', 'text');
+		input.setAttribute('maxlength', '20');
+		input.setAttribute('name', name);
+		input.setAttribute('placeholder', name);
+		conteiner.appendChild(input);
+		return input;
+	};
+
+	var nameInput = creteInput('name', formBook);
+	var authorInput = creteInput('author', formBook);
+	var pagesInput = creteInput('page', formBook);
+
+	var newBookButton = document.createElement('button');
+	newBookButton.innerHTML = 'Add book';
+
+	function reset() {
+		nameInput.value='';
+		authorInput.value='';
+		pagesInput.value='';
+	};
+	
+	function.addEventListener('submit', function(event) {
+		var newBook = new Book(nameInput.value, authorInput.value, pagesInput.value);
+		renderBook(newBook);
+		book.push(newBook);
+		
+		reset();
+		
+		event.preventDefault();
+		
+	});
+		
+
+	formBook.appendChild(newBookButton);
+	document.body.appendChild(formBook);		
+	
+	
+	
+	
+</script>
+
+<!-- add LiveReload function -->
+<script>
+    document.write('<script src="http://' + (location.host || 'localhost')
+        .split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+</script>
+
+</html>
+
+
+<!-- NOTES -->
+
+<!-- 
+
+Reident (JS Beautifier): Ctrl+A - Alt+Shift+T // { "keys": ["alt+shift+t"], "command": "reindent" }, // 
+Nultiple Rename: Ctrl+D
+
+->
+
+
+
+
+<!-- TO DO -->
+
+<!-- 
+
+ООП в Javascript: наследование
+http://javascript.ru/tutorial/object/inheritance
+
+->
