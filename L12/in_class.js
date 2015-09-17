@@ -26,3 +26,22 @@ $delegate( qs('body'), 'input[type=text]', 'click', consoleValue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
