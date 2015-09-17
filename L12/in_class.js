@@ -24,9 +24,25 @@ $delegate( qs('body'), 'input[type=text]', 'click', consoleValue);
 //----------------------------------------------------------------
 // code for https://github.com/Javascripticus/todo-mvc
 
+var todos;
 var $newTodoText = qs('#newTodoText');
 var keyupHaandler = function keyupHandler (event) {
 	console.log(event);
+	if ( event.keyCode == 13 ) {
+		//event.preventDefault();
+		todos.push({
+			completed: false,
+			text: event.target.value
+		});
+
+	// добавить идентификатор id к списку 
+var fragment = document.createDocumentFragment();
+fragment.innerHTML = '<li>' + event.target.value + '</li>';
+$todosList.appendChild('<li>2</li>');
+
+	}
+
+
 };
 $on.($newTodoText, 'keyup', keyupHandler);
 
