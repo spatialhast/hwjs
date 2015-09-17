@@ -22,8 +22,13 @@ $delegate( qs('body'), 'input[type=text]', 'click', consoleValue);
 //console.log( qs('input[type=text]') );
 
 //----------------------------------------------------------------
+// code for https://github.com/Javascripticus/todo-mvc
 
-
+var $newTodoText = qs('#newTodoText');
+var keyupHaandler = function keyupHandler (event) {
+	console.log(event);
+};
+$on.($newTodoText, 'keyup', keyupHandler);
 
 
 
