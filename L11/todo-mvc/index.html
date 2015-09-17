@@ -20,12 +20,9 @@
       display: inline-block;
     }
 
-.done {
-    text-decoration: line-through;
-}
-
-
-
+		.done {
+		    text-decoration: line-through;
+		}
   </style>
 </head>
 <body>
@@ -43,19 +40,19 @@
 
         <div class="main">
           <ul class="list list-unstyled">
-          	<!--li>
+          	<li>
           		<label for="a1">
-          			<input id="a1" type="checkbox">
+          			<input id="a1" class="chb" type="checkbox">
           			Задача 1
           		</label>
-          	</li-->
+          	</li>
           </ul>
         </div>
 
         <div class="footer">
           <div class="checkbox">
             <label>
-              <input type="checkbox">Make all as complited
+              <input id="makeAllCompl" type="checkbox">Make all as complited
             </label>
           </div>
           <div>
@@ -86,9 +83,9 @@
 
 $(document).ready(function (){
 
-     var id, numb = 0; 
+    var id, numb = 0; 
 
-
+     // add new todo
      $('.header').submit(function (event) {
 
        var value = $.trim($('#input').val()); // $.trim - remove the whitespace from the beginning and end of a string
@@ -97,7 +94,7 @@ $(document).ready(function (){
         numb++
         id = 'inp' + numb; 
 
-         $('.main ul').append('<li><label for="' + id + '"><input id="' + id + '" type="checkbox"> ' + value + '</label>   <a href="">x</a></li>');
+         $('.main ul').append('<li><label for="' + id + '"><input id="' + id + '" type="checkbox" class="chbx"> ' + value + '</label>   <a href="">x</a></li>');
         
          $('#input').val(''); // clear input form
          event.preventDefault(); // cancel reload page action
@@ -110,84 +107,64 @@ $(document).ready(function (){
 
 
 
+	// add event for Make all as complited checkbox
+	$('#makeAllCompl').change(function() {
+	 
+	  $('li input').prop('checked', this.checked); // make checked/unchecked all task
 
-/*
+	// add line-through text decoration for checked tasks
+	  if ( $('li input').prop('checked') ) {
 
-  //On change checkbox 'Make all as complited'
-	$(':checkbox').click(function() {
-	   
+	    $('li label').addClass('done');
 
+	  } else {
 
-
-
-	   // using jQuery's filter() method  
-	   if ( $(this).filter(':checked') ) {  
-              console.log('checked');
-	   } else {
-
-        console.log('unchecked');
-     }
+	    $('li label').removeClass('done');
+	  }
+	});
 
 
 
 
+
+	// check only task
+	$('.chb').on('change', function(){
+
+
+
+	    if ( $('.chb').prop('checked') ) {
+
+	      $('li label').addClass('done');
+
+	    } else {
+
+	      $('li label').removeClass('done');
+	    }
 
 	});
-   
-*/
 
 
 
-$(':checkbox').change(function() {
-  //$('li label').addClass('done');
+	$('.chbx').on('change', function(){
+
+	    if ( $('.chbx').prop('checked') ) {
+
+	      $('li label').addClass('done');
+
+	    } else {
+
+	      $('li label').removeClass('done');
+	    }
+
+	});
 
 
 
-  var n = $(this).prop('checked')
-  //console.log(n);
-
-
-
-
-  var n = $(':checkbox').prop('checked')
-  //console.log(n);
-
-
-
-
-if ( $(this).prop('checked') ) {
-
-  //$(':checkbox').is(':checked')
-   $(':checkbox').attr('checked', true)
-} else {
-   $(':checkbox').attr('checked', false)
-}
-
-
-
-
-
-
-
-
-
- // $('#checkbox').is(':checked')
- // $('#checkbox').attr('checked')
-
-
-
-
-});
-
-
-
-
-// delete entry
-$(document).on('click', 'a', function (e) {
-    e.preventDefault();
-    $(this).parent().remove();
-});
-
+	// delete entry
+	$(document).on('click', 'a', function (e) {
+	    e.preventDefault();
+	    $(this).parent().remove();
+	});
 
 
 
@@ -210,7 +187,7 @@ $(document).on('click', 'a', function (e) {
 //$("input[name=myCheckbox]").attr("checked","checked");
 
 
-
+// http://jsfiddle.net/abZLf/3/
 
 
 
