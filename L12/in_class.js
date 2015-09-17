@@ -35,10 +35,10 @@ var keyupHaandler = function keyupHandler (event) {
 			text: event.target.value
 		});
 
-	// добавить идентификатор id к списку 
-var fragment = document.createDocumentFragment();
-fragment.innerHTML = '<li>' + event.target.value + '</li>';
-$todosList.appendChild('<li>2</li>');
+				// добавить идентификатор id к списку 
+			var fragment = document.createDocumentFragment();
+			fragment.innerHTML = '<li>' + event.target.value + '</li>';
+			$todosList.appendChild('<li>2</li>');
 
 	}
 
