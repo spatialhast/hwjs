@@ -26,7 +26,7 @@ var $todosList = qs('#todosList');
 var keyupHandler = function keyupHandler(event) {
 	
 	//проверки что это ENTER
-	if ( event.keyCode === 13 ) {
+	if ( event.keyCode === 13 && event.target.value !== '') {
 
 		//сохранение элемента в массиве
 		todos.push({
@@ -53,11 +53,11 @@ var keyupHandler = function keyupHandler(event) {
 
 		//добавить li в ul
 		$todosList.appendChild(li);
-	
+
 		// clear input
 		$newTodoText.value = '';
-	
-	
+
+
 		console.log(todos);
 
 		
@@ -104,9 +104,9 @@ $delegate( $body, 'checkbox', 'keyup', consoleValue);
 
 	  $('li input').prop('checked', this.checked); // make checked/unchecked all task
 	// add line-through text decoration for checked tasks
-	  if ( $('li input').prop('checked') ) {
+	if ( $('li input').prop('checked') ) {
 
-	    $('li label').addClass('done');
+		$('li label').addClass('done');
 
 		
 		for(var i=0; i<todos.length; i++) {
@@ -115,40 +115,35 @@ $delegate( $body, 'checkbox', 'keyup', consoleValue);
 		//console.log( todos );
 		
 		
-	  } else {
+	} else {
 
-	    $('li label').removeClass('done');
+		$('li label').removeClass('done');
 		
 		for(var i=0; i<todos.length; i++) {
 			todos[i].complited = false;
 		};
 		//console.log( todos );		
-	  }
-	  
-	});
+	}
+
+});
 
 
 
 
 
-function reload() {
+	function reload() {
 
 	//console.log( qs('#todosList') );
-	
-	
-	
-	
+
 	
 	// check only task
 	$('#chb').on('change', function(event){
 
-	
+
 	//console.log( todos );
 	//console.log( event );
 	console.log( $('#chb') );
-
-	
-	
+		
 	//event.preventDefault();
 	
 	/*
@@ -162,12 +157,9 @@ function reload() {
 	      $('li label').removeClass('done');
 	    }
 
-		*/
-		
-		
-	});
+	    */
 
-
+	  });
 };
 
 
