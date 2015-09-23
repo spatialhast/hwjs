@@ -11,62 +11,58 @@
 </head>
 <body>
 
+	<button class='button' id="home">home</button>
+	<button class='button' id="todo">todo</button>
+	<button class='button' id="books">books</button>
+
 	<div id="firstDiv"></div>
 
-	<button class='button'>Click</button>
-
 	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-
 
 	<script>
 
 		$(function() {
 
 
-			//$('.button').on('click', function() {
 
 
-				$.ajax({
-				//url: 'main.html',
-				//url: 'data.json',				
-				url: 'http://hkov.kharkov.ua/',
-				type: 'GET',
-				success: function(data){
-
-					console.log(data); // <p>Hello</p>
-					console.log(arguments); //
+	var pageContent = '';		
 
 
-					//$('#firstDiv').html(data);
-
-/*
-					for (var i = 0; i < arguments.length; i++) { 
-						console.log(arguments[i]);
-					}
 
 
-					var array = $.map(arguments, function(value, index) {
-					    return [value];
+	 function request(page) {
+					$.ajax({
+						url: page,
+						type: 'GET',
+						success: function(data){
+
+							console.log(data);
+							pageContent = data
+							$('#firstDiv').html(data);
+						}
 					});
-
-					console.log(array); 
-
-*/
-
-				}
-
-			//});
+		};
 
 
 
+
+			$('#home').on('click', function() {
+				request("home.html");
+			});
+
+			$('#todo').on('click', function() {
+				request("todo.html");
+			});
+
+			$('#books').on('click', function() {
+				request("books.html");
 			});
 
 
 
 
 		});
-
-
 
 	</script>
 
