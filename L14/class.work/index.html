@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>AJAX.XMLHttpRequest</title>
+
+	<style>
+
+	</style>
+</head>
+<body>
+
+
+	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+	<script>
+
+$(function() {
+
+
+//var list = document.getElementById('list')
+//var li = document.createElement('LI')
+//list.appendChild(li)
+
+var page1 = 'data/simple1.html';
+var page2 = 'data/simple2.html';
+var page3 = 'data/simple3.html';
+
+var json1 = 'data/some1.json';
+var json2 = 'data/some2.json';
+var json3 = 'data/some3.json';
+
+var img1 = 'data/image1.png';
+var img2 = 'data/image2.png';
+var img3 = 'data/image3.png';
+
+
+function loadPage(data) {
+				$.ajax({
+					url: data,
+					type: 'GET',
+					success: function(data){
+						$(document.body).append(data);
+					},
+					error: function(data) {
+					  console.error(data);
+					}
+				});
+};
+
+function loadJson(data) {
+				$.ajax({
+					url: data,
+					type: 'GET',
+					data: 'json',
+					success: function(data){
+						//$(document.body).append( JSON.stringify(data) + '</br>' );
+
+							$(document.body).append( data.title + " " + data.title);
+							console.log(data.title);
+
+
+					},
+					error: function(data) {
+					  console.error(data);
+					}
+				});
+};
+
+function loadImage(data) {
+				$.ajax({
+					url: data,
+					type: 'GET',
+					datatype:"image/png",
+					success: function(data){
+						console.log(data);
+						$(document.body).append( data );
+
+ 									var reader = new FileReader();
+
+                  reader.onload = function(e) {
+                      var img = e.target.result;
+                      var nn = img.replace('data:application/octet-stream', 'data:image/png');
+                     // $("body").html(img);
+                      $("body").html('<img src="'+nn+'">');
+                      console.log(nn);
+                    };
+
+                  reader.readAsDataURL(new Blob([data]));
+
+
+
+
+					},
+					error: function(data) {
+					  console.error(data);
+					}
+				});
+};
+
+//loadPage(page1);
+//loadPage(page2);
+//loadPage(page3);
+
+//loadJson(json1);
+//loadJson(json2);
+//loadJson(json3);
+
+loadImage(img1);
+
+/*
+var imageContainer = $('<div id="imageDiv"></div>');
+var image1 = $('<img src="data/image1.png">');
+var image2 = $('<img src="data/image2.png">');
+var image3 = $('<img src="data/image3.png">');
+imageContainer.append(image1);
+imageContainer.append(image2);
+imageContainer.append(image3);
+$('body').append(imageContainer);
+*/
+
+
+});
+
+</script>
+
+<!-- add LiveReload function -->
+	<script>
+		document.write('<script src="http://' + (location.host || 'localhost')
+			.split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+		</script>
+
+	</body>
+
+	</html>
