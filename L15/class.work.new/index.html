@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style>
+		#div1{
+			position: absolute;
+			width: 370px;
+			height: 370px;
+			left: 10px;
+			margin-top: 10px;
+			text-align: center;
+		}
+
+		#div2{
+			position: absolute;
+			width: 370px;
+			height: 370px;
+			right: 10px;
+			margin-top: 10px;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+
+<div id="div1" style="background-color: green;"></div>
+<div id="div2" style="background-color: red;"></div>
+
+
+	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+	<script>
+
+$(function() {
+
+
+			var pageContent;		
+
+			function request(div, page) {
+				$.ajax({
+					url: page,
+					type: 'GET',
+					success: function(data){
+						$(div).html(data);
+						pageContent = data;						
+					}
+				});
+				};
+
+
+
+
+
+
+
+$.when(
+
+request('#div1', 'data/simple1.html'),
+request('#div2', 'data/simple2.html')
+
+
+).done(
+
+$('#div2').animate({left: 50}, 2500),
+$('#div1').animate({left: 700}, 1500)
+
+);
+
+
+
+
+
+
+});
+
+</script>
+
+<!-- add LiveReload function -->
+	<script>
+		document.write('<script src="http://' + (location.host || 'localhost')
+			.split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+</script>
+
+	</body>
+	</html>
