@@ -8,12 +8,11 @@
 
 	<style>
 
-		.col-md-3 {
+
+		.container {
 			margin-top: 10px;
 		}
-		.col-md-9 {
-			margin-top: 10px;
-		}	
+
 
 	</style>
 
@@ -21,21 +20,29 @@
 </head>
 <body>
 
-	<div class="row">
-		<div class="col-md-3">
 
-			<form id="search-form">
-				<input type="text" class="form-control" id="query" placeholder="Address..."></br>
-				<button class="btn btn-default" id="query" type="submit">Submit</button>
-			</form>
+	<div class="container">
 
-		</div>
 
-		<div class="col-md-9">
-			<textarea class="form-control" id="outputForm" rows="10"></textarea>
+		<div class="row">
+			<div class="col-md-3">
+
+				<form id="search-form">
+					<input type="text" class="form-control" id="query" placeholder="Address..."></br>
+					<button class="btn btn-primary pull-right" id="query" type="submit">Submit</button>
+				</form>
+
+			</div>
+
+			<div class="col-md-9">
+				<textarea class="form-control" id="outputForm" rows="10"></textarea>
+			</div>
+
 		</div>
 
 	</div>
+
+
 
 
 
@@ -47,8 +54,11 @@
 
 
 
-	($(function(global) {
 
+
+
+
+		(function(global) {
 			var url = 'http://api.nestoria.co.uk/api?' +
 			'country=uk&' +
 			'pretty=1&' + 
@@ -60,8 +70,6 @@
 
 			var nestoriaApi = {
 				getLocations: function (placeName, successCallback, errorCallback) {
-
-
 					$.ajax({
 						url: url + '&place_name=' + placeName,
 						type: 'GET',
@@ -69,24 +77,22 @@
 						success: successCallback,
 						error: errorCallback
 					});
-
-
 				}
 			};
 
 			global.nestoriaApi = nestoriaApi;
+		})(window);
 
 
-})(window);
+
+
+
+
 
 
 
 
 		$(function() {
-
-
-
-
 			// находим форму
 			var $searchForm = $("#search-form"); 
 		 	// находим input
@@ -97,18 +103,63 @@
 		 			// this - объект элемента на котором произошло событие
 		 			var inputValue = $query.val();
 
-		 			console.log(inputValue);
+		 			//console.log(inputValue);
 
 		 			var error = function (data) {
-		 						console.log(data);
-		 			};
-		 			success = error;
+		 				//console.log(data);
+		 				console.log(data.response);
 
 
-		 			nestoriaApi.getLocations(inputValue, success, error);
+		 				var responseCode = data.response.application_response_code;
+
+		 				if ( responseCode === '200' || responseCode === '202') {
+
+		 					var locations = data.response.locations
+		 					console.log( locations );
+		 					console.log( locations.length );
+
+		 					var array = [];
+		 					for (var i = 0; i < locations.length ; i++) {
+		 						array.push(  JSON.stringify( locations[i] ) );
+		 					}
+
+
+		 					//$('#outputForm').val( JSON.stringify(cc) );
+		 					$('#outputForm').val( array );
+
+
+		 				} else if ( responseCode === '100' || responseCode === '101' || responseCode === '110') {
+
+		 					var page = data.response.page;
+		 					var properties = data.response.listings;
+		 					var total_results = data.response.total_results;
+
+		 					console.log( page );
+		 					console.log( properties );
+		 					console.log( total_results );
+
+		 					alert('responseCode = 100/101/110');
+		 				} else {
+		 					alert('The location given was not recognised.');
+		 				}
 
 
 
+
+
+//data.response.application_response_code
+//data.response.application_response_text 
+
+
+
+
+
+
+
+};
+success = error;
+
+nestoriaApi.getLocations(inputValue, success, error);
 
 		 			// отмена стандартного поведения перезагрузки страницы
 		 			event.preventDefault();
@@ -116,13 +167,11 @@
 		 		};
 
 		 		$searchForm.on('submit', onSubmitHundler);	
-
-
-
-
-
-
 		 	});
+
+
+
+
 
 
 
