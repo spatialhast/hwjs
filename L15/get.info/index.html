@@ -13,6 +13,9 @@
 			margin-top: 10px;
 		}
 
+		.col-md-9 {
+			border-style: solid;
+		}
 
 	</style>
 
@@ -34,29 +37,18 @@
 
 			</div>
 
-			<div class="col-md-9">
-				<textarea class="form-control" id="outputForm" rows="10"></textarea>
+			<div class="col-md-9" id="result">
+				
 			</div>
 
 		</div>
 
 	</div>
 
-
-
-
-
-
 	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 	<script>
-
-
-
-
-
-
 
 		(function(global) {
 			var url = 'http://api.nestoria.co.uk/api?' +
@@ -86,107 +78,117 @@
 
 
 
-
-
-
-
-
-
 		$(function() {
 			// находим форму
 			var $searchForm = $("#search-form"); 
 		 	// находим input
 		 	var $query = $("#query");
 
+
+		 	var queryText = (function(){
+		 		var value = '';
+		 		return {
+		 			get: function() {
+		 				return value;
+		 			},
+		 			set: function(val) {
+		 				_value = val;
+		 				$query.trigger('querytext:change', val);
+		 			}
+		 		}
+		 	})();
+
+
+
+
+
+		 	var showBuildingsList = function (response) {
+		 		//console.info('showBuildingsList', response);
+
+
+		 		var elements = response.listings;
+
+		 		var fE = function(elements){
+		 			$('#result').append('<li> <img src=' + elements.img_url + ' style="height: 100px;">');
+		 			$('#result').append('<h2>'+elements.price_formatted+'</h2>');
+		 			$('#result').append('<h3>'+elements.title+'</h3>');
+		 			$('#result').append('<h4>'+elements.summary+'</h4> </li>');
+		 		};
+
+		 		elements.forEach(fE);
+
+
+				console.log( response );
+
+
+
+/*		 		response.listings[0].img_url
+		 		response.listings[0].price_formatted
+		 		response.listings[0].title
+		 		response.listings[0].summary*/		 	
+
+
+
+		 	};
+		 	var showLocationsList = function (response) {
+		 		//console.info('showLocationsList', response);	
+
+
+
+		 	};
+		 	var showErrorsList = function (response) {
+		 		console.info('showErrorsList', response);	
+		 	};
+
+
+
+
 		 	// создаем функцию callback для submit формы
 		 	var onSubmitHundler = function onSubmitHundler(event) {
 		 			// this - объект элемента на котором произошло событие
-		 			var inputValue = $query.val();
-
-		 			//console.log(inputValue);
-
-		 			var error = function (data) {
-		 				//console.log(data);
-		 				console.log(data.response);
-
-
-		 				var responseCode = data.response.application_response_code;
-
-		 				if ( responseCode === '200' || responseCode === '202') {
-
-		 					var locations = data.response.locations
-		 					console.log( locations );
-		 					console.log( locations.length );
-
-		 					var array = [];
-		 					for (var i = 0; i < locations.length ; i++) {
-		 						array.push(  JSON.stringify( locations[i] ) );
-								console.log( locations[i].center_long  );
-								//$(document.body).append(  locations[i].center_long );
-		 					}
-
-
-
-							
-
-		 					for (var i = 0; i < array.length ; i++) {
-		 						
-								//console.log( array[i] );
-								//console.log( array[i].center_long );
-								//console.log( array[i].long_title );
-								//console.log( array[i].place_name );
-								//console.log( array[i].title );
-
-		 					}
-
-
-
-
-
-
-		 					//$('#outputForm').val( JSON.stringify(cc) );
-		 					$('#outputForm').val( array );
-
-
-		 				} else if ( responseCode === '100' || responseCode === '101' || responseCode === '110') {
-
-		 					var page = data.response.page;
-		 					var properties = data.response.listings;
-		 					var total_results = data.response.total_results;
-
-		 					console.log( page );
-		 					console.log( properties );
-		 					console.log( total_results );
-
-		 					alert('responseCode = 100/101/110');
-		 				} else {
-		 					alert('The location given was not recognised.');
-		 				}
-
-
-
-
-
-//data.response.application_response_code
-//data.response.application_response_text 
-
-
-
-
-
-
-
-};
-success = error;
-
-nestoriaApi.getLocations(inputValue, success, error);
+		 			//var inputValue = $query.val();
+		 			queryText.set($query.val());
 
 		 			// отмена стандартного поведения перезагрузки страницы
 		 			event.preventDefault();
-		 			
 		 		};
 
+
+
+		 		var onChangeQueryText = function(event, text){
+		 			//console.log('onChangeQueryText');
+		 			var callbackSuccess = function(data){
+		 				switch (data.response.application_response_code){
+		 					case '100':
+		 					case '101':
+		 					case '110':
+		 					showBuildingsList(data.response);
+		 					break;
+
+		 					case '200':
+		 					case '202':
+		 					showLocationsList(data.response);
+		 					break;
+		 					default: 
+		 					showErrorsList(data.response);
+		 				};
+
+		 			};
+		 			var callbackError = function(data){
+		 				console.error(data);
+		 			};
+		 			nestoriaApi.getLocations(text, callbackSuccess, callbackError);
+
+		 			event.preventDefault();
+		 		};
+
+
+
 		 		$searchForm.on('submit', onSubmitHundler);	
+		 		$query.on('querytext:change', onChangeQueryText);
+
+
+
 		 	});
 
 
