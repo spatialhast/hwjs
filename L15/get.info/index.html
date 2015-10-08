@@ -105,9 +105,13 @@
 		 	var showBuildingsList = function (response) {
 		 		//console.info('showBuildingsList', response);
 
+				$('#result').html('');
 
-		 		var elements = response.listings;
 
+		 		var element = response.listings;
+		 		
+
+		 		/*
 		 		var fE = function(elements){
 		 			$('#result').append('<li> <img src=' + elements.img_url + ' style="height: 100px;">');
 		 			$('#result').append('<h2>'+elements.price_formatted+'</h2>');
@@ -116,14 +120,78 @@
 		 		};
 
 		 		elements.forEach(fE);
+		 		*/
+
+
+		 		var fragment = document.createDocumentFragment();
+		 		var existingUI = document.getElementById('result');
+
+		 		var html= '';
+
+		 		function someFunc (element) {
+					var template = '<li><img style="height: 150px;" src="<%img_url%>"><h4><%title%></h4><p><%summary%></p></li>';
+					
+					var string1 = template.replace('<%img_url%>', element.img_url);
+					var string2 = string1.replace('<%title%>', element.title);
+					var string3 = string2.replace('<%summary%>', element.summary);
+
+		 			html+=string3;
+		 		};
+
+		 		element.forEach(someFunc);
+
+		 		existingUI.innerHTML = html;
 
 		 	};
+
+
+
+
+
+
+
 		 	var showLocationsList = function (response) {
 		 		//console.info('showLocationsList', response);	
 
+		 		$('#result').html('');
 
 
+function load() {
+
+	console.log("asd");
+};
+
+
+
+
+		 		var element = response.locations;
+
+		 		//console.log(response.locations);
+		 		var fragment = document.createDocumentFragment();
+		 		var existingUI = document.getElementById('result');
+
+		 		function someFunc (element) {
+		 			var li = document.createElement('li');
+
+		 			li.innerHTML = '<b>Short Title:</b> ' + element.title + '<br/>' 
+		 											//+ '<b>Full Title:</b> ' + element.long_title + '<br/>' 
+		 											+ '<b>Full Title:</b> ' + '<a href="#" onclick="load()" >' + element.long_title + '</a>' + '<br/>'   
+		 											+ '<b>Lat:</b> ' + element.center_lat + '<br/>' 
+		 											+ '<b>Lng:</b> ' + element.center_long + '<br/>&nbsp';
+		 			//li.innerHTML = JSON.stringify(element);
+
+		 			//console.log(element);
+
+		 			fragment.appendChild(li);
+		 		};
+
+		 		element.forEach(someFunc);
+
+		 		existingUI.appendChild(fragment);
 		 	};
+
+
+
 		 	var showErrorsList = function (response) {
 		 		console.info('showErrorsList', response);	
 		 	};
@@ -178,10 +246,6 @@
 
 
 		 	});
-
-
-
-
 
 
 

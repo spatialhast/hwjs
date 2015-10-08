@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+
+	<style>
+
+
+		.container {
+			margin-top: 10px;
+		}
+
+		.col-md-9 {
+			border-style: solid;
+		}
+
+	</style>
+
+
+</head>
+<body>
+
+
+	<div class="container">
+
+
+		<div class="row">
+			<div class="col-md-3">
+
+				<form id="search-form">
+					<input type="text" class="form-control" id="query" placeholder="Address..."></br>
+					<button class="btn btn-primary pull-right" id="query" type="submit">Submit</button>
+				</form>
+
+			</div>
+
+
+			<div class="col-md-9">
+
+				<ul id="result">
+					
+				</ul>
+
+			</div>
+
+
+		</div>
+
+	</div>
+
+	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+	<script>
+
+
+
+		$(function() {
+
+
+
+
+			var someList = ['one', 'two', 'three'];
+
+			var fragment = document.createDocumentFragment();
+			var existingUI = document.getElementById('result');
+
+
+			function someFunc (element) {
+				var li = document.createElement('li');
+				li.innerHTML = element;
+				fragment.appendChild(li);
+
+				//console.log(element);
+
+			};
+
+			someList.forEach(someFunc);
+
+			existingUI.appendChild(fragment);
+
+		});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</script>
+
+	<!-- add LiveReload function -->
+	<script>
+		document.write('<script src="http://' + (location.host || 'localhost')
+			.split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+	</script>
+
+
+</body>
+</html>
