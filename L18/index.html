@@ -45,8 +45,16 @@
 
 	</div>
 
+	
+
+
+
+
+
 	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 
 	<script>
 
@@ -100,12 +108,12 @@
 
 
 
-function ff(){
+		 	function ff(){
 
-					$('#infolink').on('click', function () {
-				  console.log("ss");
-				});
-}
+		 		$('#infolink').on('click', function () {
+		 			console.log("ss");
+		 		});
+		 	}
 
 
 
@@ -168,7 +176,19 @@ function ff(){
 		 	var showLocationsList = function (response) {
 		 		//console.info('showLocationsList', response);	
 
+
+		 		var htmlTemplate = $('#locations-list').html();
+		 		var funcTemplate = _.template(htmlTemplate);
+
+		 		var newHtmlTemplate  = funcTemplate();
+
+
+
+/*
 		 		$('#result').html('');
+
+
+
 
 
 		 		var element = response.locations;
@@ -204,7 +224,7 @@ function ff(){
 		 		existingUI.appendChild(fragment);
 
 		 		ff();
-
+*/
 
 
 
