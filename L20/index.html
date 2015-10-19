@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+
+	<style>
+
+
+		.container {
+			margin-top: 10px;
+		}
+
+		.col-md-9 {
+			border-style: solid;
+		}
+
+	</style>
+
+
+</head>
+<body>
+
+
+	<div class="container">
+
+
+		<div class="row">
+			<div class="col-md-3">
+
+				<form id="search-form">
+					<input type="text" class="form-control" id="query" placeholder="Address..."></br>
+					<button class="btn btn-primary pull-right" id="query" type="submit">Submit</button>
+				</form>
+
+			</div>
+
+			<div class="col-md-9" id="result">
+				
+			</div>
+
+		</div>
+
+	</div>
+
+	
+
+	<script type="text/template" id="success-locations">
+	<ul class="list">
+
+
+	</ul>
+	</script>
+
+
+
+	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+	<script>
+
+		(function(global) {
+			var url = 'http://api.nestoria.co.uk/api?' +
+			'country=uk&' +
+			'pretty=1&' + 
+			'action=search_listings&' +
+			'encoding=json' +
+			'&listing_type=buy&' +
+			'page=1&' +
+			'number_of_results=6';
+
+			var nestoriaApi = {
+				getLocations: function (placeName, successCallback, errorCallback) {
+					$.ajax({
+						url: url + '&place_name=' + placeName,
+						type: 'GET',
+						dataType: "jsonp",
+						success: successCallback,
+						error: errorCallback
+					});
+				}
+			};
+
+			global.nestoriaApi = nestoriaApi;
+		})(window);
+
+
+
+
+		$(function() {
+			// находим форму
+			var $searchForm = $("#search-form"); 
+		 	// находим input
+		 	var $query = $("#query");
+
+
+
+
+		 	// localStorage implementation
+		 	var successLocations;
+
+		 	successLocations = localStorage.getItem('successLocations');
+		 	successLocations = JSON.parse(successLocations);
+
+     if ( !successLocations ) { // !null === true
+     	successLocations = [];
+     };
+
+     var showSuccessLocations = function showSuccessLocations(locations) {
+
+     		var htmlTemplate = $('success-locations').html();
+     		var funcTemplate = _.template(htmlTemplate);
+
+     		var data = {
+     			locations: successLocations
+     		}
+
+
+     };
+
+
+
+
+/*
+		 	var fromLocal = JSON.parse( localStorage.getItem("successLocations") );
+
+		 	showBuildingsList(sendData);	
+
+     if ( !fromLocal ) { // !null === true
+     	fromLocal = [];
+     }
+     fromLocal.push( queryText.get() );
+
+     localStorage.setItem("successLocations", JSON.stringify(fromLocal));
+
+     */
+
+
+
+
+
+     var queryText = (function(){
+     	var value = '';
+     	return {
+     		get: function() {
+     			return value;
+     		},
+     		set: function(val) {
+     			_value = val;
+     			$query.trigger('querytext:change', val);
+     		}
+     	}
+     })();
+
+
+
+     function ff(){
+
+     	$('#infolink').on('click', function () {
+     		console.log("ss");
+     	});
+     }
+
+
+
+
+
+
+
+     var showBuildingsList = function (response) {
+		 		//console.info('showBuildingsList', response);
+
+		 		$('#result').html('');
+
+
+		 		var element = response.listings;
+		 		
+
+		 		/*
+		 		var fE = function(elements){
+		 			$('#result').append('<li> <img src=' + elements.img_url + ' style="height: 100px;">');
+		 			$('#result').append('<h2>'+elements.price_formatted+'</h2>');
+		 			$('#result').append('<h3>'+elements.title+'</h3>');
+		 			$('#result').append('<h4>'+elements.summary+'</h4> </li>');
+		 		};
+
+		 		elements.forEach(fE);
+		 		*/
+
+
+		 		var fragment = document.createDocumentFragment();
+		 		var existingUI = document.getElementById('result');
+
+		 		var html= '';
+
+		 		function someFunc (element) {
+		 			var template = '<li><img style="height: 150px;" src="<%img_url%>"><h4><%title%></h4><p><%summary%></p></li>';
+
+		 			var string1 = template.replace('<%img_url%>', element.img_url);
+		 			var string2 = string1.replace('<%title%>', element.title);
+		 			var string3 = string2.replace('<%summary%>', element.summary);
+
+		 			html+=string3;
+		 		};
+
+		 		element.forEach(someFunc);
+
+		 		existingUI.innerHTML = html;
+
+		 	};
+
+
+
+
+
+
+
+
+
+
+
+		 	var showLocationsList = function (response) {
+		 		//console.info('showLocationsList', response);	
+
+
+		 		var htmlTemplate = $('#locations-list').html();
+		 		var funcTemplate = _.template(htmlTemplate);
+
+		 		var newHtmlTemplate  = funcTemplate();
+
+
+
+/*
+		 		$('#result').html('');
+
+
+
+
+
+		 		var element = response.locations;
+
+		 		//console.log(response.locations);
+		 		var fragment = document.createDocumentFragment();
+		 		var existingUI = document.getElementById('result');
+
+		 		function someFunc (element) {
+
+
+		 			var li = document.createElement('li');
+
+		 			li.innerHTML = '<b>Short Title:</b> ' + element.title + '<br/>' 
+		 											//+ '<b>Full Title:</b> ' + element.long_title + '<br/>' 
+		 											+ '<b>Full Title:</b> ' + '<a id="infolink" href="#">' + element.long_title + '</a>' + '<br/>'   
+		 											+ '<b>Lat:</b> ' + element.center_lat + '<br/>' 
+		 											+ '<b>Lng:</b> ' + element.center_long + '<br/>&nbsp';
+		 			//li.innerHTML = JSON.stringify(element);
+
+		 			//console.log(element);
+
+		 			fragment.appendChild(li);
+
+		 		};
+
+		 		element.forEach(someFunc);
+
+
+
+
+
+		 		existingUI.appendChild(fragment);
+
+		 		ff();
+		 		*/
+
+
+
+
+
+		 	};
+
+
+
+		 	var showErrorsList = function (response) {
+		 		console.info('showErrorsList', response);	
+		 	};
+
+
+
+
+		 	// создаем функцию callback для submit формы
+		 	var onSubmitHundler = function onSubmitHundler(event) {
+		 			// this - объект элемента на котором произошло событие
+		 			//var inputValue = $query.val();
+		 			queryText.set($query.val());
+
+		 			// отмена стандартного поведения перезагрузки страницы
+		 			event.preventDefault();
+		 		};
+
+
+
+		 		var onChangeQueryText = function(event, text){
+		 			//console.log('onChangeQueryText');
+		 			var callbackSuccess = function(data){
+		 				switch (data.response.application_response_code){
+		 					case '100':
+		 					case '101':
+		 					case '110':
+
+		 					showBuildingsList(data.response);
+
+		 					if ( successLocations.indexOf( text ) < 0 ) {
+		 						successLocations.push(text);
+		 						localStorage.setItem('successLocations', JSON.stringify(successLocations));
+		 					}
+
+
+/*
+	var sendData = data.response;	
+		 var fromLocal = JSON.parse( localStorage.getItem("successLocations") );
+		 
+     		
+
+     if ( !fromLocal ) { // !null === true
+     	fromLocal = [];
+     }
+     fromLocal.push( queryText.get() );
+
+     	localStorage.setItem("successLocations", JSON.stringify(fromLocal));
+     	*/     	
+
+     //	console.log(fromLocal);
+     
+
+
+
+
+
+/*
+		 // saveToLocastorage(text)
+
+     fromLocal.push(text);
+
+     //
+     
+     localStorage.getItem("successLocations");
+     JSON.stringify
+     JSON.parse
+     */
+
+
+
+
+
+
+
+     break;
+
+     case '200':
+     case '202':
+     showLocationsList(data.response);
+     break;
+     default: 
+     showErrorsList(data.response);
+   };
+
+ };
+ var callbackError = function(data){
+ 	console.error(data);
+ };
+ nestoriaApi.getLocations(text, callbackSuccess, callbackError);
+
+ event.preventDefault();
+};
+
+
+
+$searchForm.on('submit', onSubmitHundler);	
+$query.on('querytext:change', onChangeQueryText);
+
+
+
+});
+
+
+
+</script>
+
+<!-- add LiveReload function -->
+<script>
+	document.write('<script src="http://' + (location.host || 'localhost')
+		.split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+</script>
+
+
+</body>
+</html>
