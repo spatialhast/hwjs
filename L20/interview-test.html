@@ -20,12 +20,33 @@
 // PLACE YOUR CODE HERE
 
 function Parallel() {
+	var _results = [];
+
+	this.job = function(step) {
+		
+		function _done(str) {
+			console.log('_done', str);
+		};
+	
+		step(_done);
+
+		return this // 2
+		 //{
+			// job: function(){ // 1
+
+			// }
+		 //}
+	};
+
+	this.done = function(_onDone) { // 3
+		console.log('Parallel done');
+		_onDoneCallback = onDone;
+	};
 
 };
 
-runner.job = function(argument) {
-	return this;
-}
+
+//onDone([]);  // 4 - function //5 [] - array
 
 
 
@@ -36,6 +57,9 @@ var runner = new Parallel({
 	parallelJobs: 2 //optional, you may not implement this feature.
 });
 
+//console.log(runner);
+//console.log(runner.job(step1));
+
 runner.job(step1)
 	.job(step2)
 	.job(step3)
@@ -45,6 +69,11 @@ runner.job(step1)
 function step1(done) {
 	console.log('step1');
 	setTimeout(done, 1000, 'step1');
+	// третий параметр - тот праметр, который передатся в функцию
+
+	// аналогичная запись setTimeout(function() {	done('step1')	}, 1000);
+
+
 }
 
 function step2(done) {
