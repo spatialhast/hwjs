@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+
+	<style>
+
+
+		#rect {
+			position: absolute;
+			left: 10px;
+			top: 10px;
+			border: 1px solid green;
+			background-color: rgb(0, 220, 0);
+			width: 100px;
+			height: 100px;
+		}
+
+
+	</style>
+
+
+</head>
+<body>
+
+
+	<div id="rect">
+
+
+
+	</div>
+
+	
+
+	<script>
+
+
+
+		var elem = document.getElementById("rect"),
+		left = 0,
+		timer;
+
+		timer = setInterval(function() {
+			
+			if ( left < 400 ) {
+				elem.style.left = ( left += 10 ) + "px";
+			}
+
+			if ( left > 400 ) {
+				//clearInterval( timer );
+				elem.style.left = ( right += 100 ) + "px";
+			}
+
+
+		}, 1000/30);
+
+
+
+
+
+
+
+/*   rect.onclick = function() {
+      var start = Date.now(); // сохранить время начала
+
+      var timer = setInterval(function() {
+        // вычислить сколько времени прошло из opts.duration
+        var timePassed = Date.now() - start;
+
+        rect.style.left = timePassed / 5 + 'px';
+
+        if (timePassed > 2000) clearInterval(timer);
+
+      }, 20);
+}*/
+
+
+
+/*   rect.onclick = function() {
+      animate(function(timePassed) {
+        rect.style.left = timePassed / 5 + 'px';
+      }, 1000);
+    };
+
+    // Рисует функция draw
+    // Продолжительность анимации duration
+    function animate(draw, duration) {
+      var start = performance.now();
+
+      requestAnimationFrame(function animate(time) {
+        // определить, сколько прошло времени с начала анимации
+        var timePassed = time - start;
+
+        console.log(time, "  ", start)
+        console.log(timePassed)
+          // возможно небольшое превышение времени, в этом случае зафиксировать конец
+        if (timePassed > duration) timePassed = duration;
+
+        // нарисовать состояние анимации в момент timePassed
+        draw(timePassed);
+
+        // если время анимации не закончилось - запланировать ещё кадр
+        if (timePassed < duration) {
+          requestAnimationFrame(animate);
+        }
+
+      });
+console.log();
+
+    }
+
+
+    */
+
+
+
+
+
+
+  </script>
+
+  <!-- add LiveReload function -->
+  <script>
+  	document.write('<script src="http://' + (location.host || 'localhost')
+  		.split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+  </script>
+
+
+</body>
+</html>
