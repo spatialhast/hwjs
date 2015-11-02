@@ -4,39 +4,77 @@
 	<title></title>
 
 
-	<style>
-
-
-		#rect {
-			position: absolute;
-			left: 10px;
-			top: 10px;
-			border: 1px solid green;
-			background-color: rgb(0, 220, 0);
-			width: 100px;
-			height: 100px;
-		}
-
-
-	</style>
-
 
 </head>
 <body>
 
 
-	<div id="rect">
+
+
+</div>
 
 
 
-	</div>
-
-	
-
-	<script>
+<script>
 
 
+	var element = document.createElement('div');
+	element.setAttribute('id', 'rect');
+	element.style.width = '100px';
+	element.style.height = '100px';
+	element.style.position = 'absolute';
+	element.style.border = '1px solid green';
+	element.style.backgroundColor = 'rgb(0, 220, 0)';
+	element.style.top = 0;
+	element.style.left = 0;
 
+	document.body.appendChild(element);
+
+
+
+
+	var left = parseInt(getComputedStyle(element).left, 10);
+		//var htmlTop = parseInt(getComputedStyle(element).top, 10);
+
+	var width = parseInt(getComputedStyle(element).width, 10),
+		height = parseInt(getComputedStyle(element).height, 10);
+
+
+
+
+
+	function animateObject(obj) {
+
+		var screenWidth = document.documentElement.clientWidth;
+		var screenHeight = document.documentElement.clientHeight;
+
+		left += 10;
+		//htmlTop +=5;
+		
+
+		var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+	    							window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
+
+		if (left > screenWidth) {
+			left = - width;
+			//htmlTop += height;
+		};
+
+/*		if (htmlTop > screenHeight) {
+			htmlTop = -height;
+		};
+*/
+		element.style.left = left + "px";
+		//element.style.top = htmlTop + "px";
+
+		requestAnimationFrame(animateObject);
+	};
+	animateObject(element);
+
+
+
+	/*
 		var elem = document.getElementById("rect"),
 		left = 0,
 		timer;
@@ -54,7 +92,7 @@
 
 
 		}, 1000/30);
-
+*/
 
 
 
